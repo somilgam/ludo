@@ -240,6 +240,7 @@ nav{
   right:0%;
   top:0%;
   position: absolute;
+  color: white;
 }
 #quitalert,#deletealert{
   height:10%;

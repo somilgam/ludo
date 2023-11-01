@@ -25,6 +25,10 @@
             window.location.href = "index.html";
         }
         document.getElementById("playprev").onclick = () => {
+            if (localStorage.getItem("arr") == null) {
+                alert("no saved progress");
+                return;
+            }
             localStorage.setItem("restart", "true");
             window.location.href = "index.html";
         }

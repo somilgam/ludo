@@ -144,18 +144,22 @@ class Pawn {
   }
   setPosition() {
     for (let i = 0; i < 4; i++) {
-      console.log(this.pos[i]);
       if (this.pos[i] != -1) {
+        console.log(this.pos[i]);
         document
           .getElementById(this.pos[i])
           .appendChild(document.getElementById(this.id[i]));
       }
     }
   }
-  in() {
+  in(n) {
     let result = [];
     for (let i = 0; i < 4; i++) {
-      if (this.pos[i] == -1 && this.pos[i] != this.winPoint) {
+      if (
+        this.pos[i] == -1 &&
+        this.pos[i] != this.winPoint &&
+        this.pos[i] + n <= this.winPoint
+      ) {
         result.push(this.id[i]);
       }
     }
@@ -221,7 +225,6 @@ let allowed;
 let button = document.getElementById("roll");
 function moving() {
   n = Math.floor(Math.random() * 6) + 1;
-  n = 5;
   if (arr[turn % 4].rank != 0) {
     turn++;
     return;
@@ -231,7 +234,7 @@ function moving() {
   if (n == 6) {
     allowed = arr[turn % 4].id;
   } else {
-    allowed = arr[turn % 4].out();
+    allowed = arr[turn % 4].out(n);
   }
 
   for (x in allowed) {
@@ -267,14 +270,14 @@ function diceWorking(rnd, color) {
   );
   $(".dot").css("background-color", color);
 }
-for (let i = 0; i < 4; i++) {
-  for (let j = 0; j < 4; j++) {
-    if (arr[i].changePosition(j, arr[i].winlineStart));
-    document
-      .getElementById(arr[i].winlineStart)
-      .appendChild(document.getElementById(arr[i].id[j]));
-  }
-}
+// for (let i = 0; i < 4; i++) {
+//   for (let j = 0; j < 4; j++) {
+//     if (arr[i].changePosition(j, arr[i].winlineStart));
+//     document
+//       .getElementById(arr[i].winlineStart)
+//       .appendChild(document.getElementById(arr[i].id[j]));
+//   }
+// }
 window.onload = () => {
   if (localStorage.getItem("restart") == "true") {
     if (localStorage.getItem("arr") != null) {
@@ -282,7 +285,7 @@ window.onload = () => {
       for (let i = 0; i < 4; i++) {
         arr[i].pos = t[i].pos;
         arr[i].rank = t[i].rank;
-        rank = max(arr[i].rank, rank);
+        rank = Math.max(arr[i].rank, rank);
         if (arr[i].rank != 0) {
           rankarr[arr[i].rank - 1] = arr[i].color;
         }
